@@ -1,233 +1,284 @@
-# 🖱️ AI Virtual Mouse - Hand Gesture Control System
+<div align="center">
 
-[![Python](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/)
-[![OpenCV](https://img.shields.io/badge/opencv-4.5+-green.svg)](https://opencv.org/)
-[![MediaPipe](https://img.shields.io/badge/mediapipe-0.10+-orange.svg)](https://mediapipe.dev/)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+<img src="assets/banner.svg" alt="AI Virtual Mouse" width="100%">
 
-Control your computer using hand gestures powered by AI! This innovative project eliminates the need for a physical mouse, offering an ergonomic and hygienic alternative for human-computer interaction.
+<br>
 
-## ✨ Features
+![Python](https://img.shields.io/badge/Python-3.8%2B-7c3aed?style=flat-square&logo=python&logoColor=white)
+![OpenCV](https://img.shields.io/badge/OpenCV-4.5%2B-a855f7?style=flat-square&logo=opencv&logoColor=white)
+![MediaPipe](https://img.shields.io/badge/MediaPipe-0.10%2B-d946ef?style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-ec4899?style=flat-square)
 
-- **✋ Touchless Mouse Control**: Control cursor with your index finger
-- **🖱️ Gesture-Based Clicking**: Pinch fingers together to click
-- **🔊 Volume Control**: Adjust system volume with hand distance
-- **🔒 Privacy Mode**: Close your fist to instantly black out the screen
-- **🎮 Interactive Game**: Gesture-controlled gaming experience (Gesture Defender)
-- **⚡ Real-Time Processing**: Smooth 30 FPS hand tracking
+**Control your computer with hand gestures, using only a webcam.**
 
-## 🎮 Gesture Controls
+[Overview](#overview) · [Gestures](#gesture-controls) · [How it works](#how-it-works) · [Installation](#installation) · [Applications](#applications) · [Team](#team)
 
-| Gesture | Action | Visual Feedback |
-|---------|--------|-----------------|
-| ☝️ Index finger up | Move cursor | Purple circle on fingertip |
-| 🤏 Index + Middle pinch (< 35px) | Left click | Green "CLICK" text |
-| 🤙 Thumb + Pinky distance | Volume control (0-100%) | Volume percentage display |
-| ✊ All fingers closed | Privacy mode | Screen blackout |
+</div>
 
-## 🚀 Quick Start
+---
 
-### Prerequisites
+## Overview
+
+AI Virtual Mouse replaces the physical mouse with real-time hand tracking. A webcam captures the hand, MediaPipe extracts 21 landmarks, and the system translates finger positions into cursor movement, clicks, volume changes and a privacy mode.
+
+**Problem.** Traditional input devices can be uncomfortable, slow, or unhygienic in some environments, especially in healthcare and other high-contact spaces.
+
+**Solution.** A hands-free, gesture-based interface that is intuitive, adaptable and usable across several domains.
+
+### Features
+
+| Feature | Description |
+|---|---|
+| Touchless cursor control | Move the cursor with the index finger |
+| Gesture clicking | Pinch two fingers together to click |
+| Volume control | Adjust the system volume with the distance between thumb and pinky |
+| Privacy mode | Close the fist to black out the screen instantly |
+| Gesture Defender | A game controlled by hand gestures |
+| Real-time processing | Smooth hand tracking at 30 FPS |
+
+## Gesture controls
+
+<div align="center">
+
+<img src="assets/gesture-move.svg" alt="Move the cursor with the index finger" width="48%">
+<img src="assets/gesture-click.svg" alt="Left click with an index and middle finger pinch" width="48%">
+<img src="assets/gesture-volume.svg" alt="Volume control with thumb and pinky distance" width="48%">
+<img src="assets/gesture-privacy.svg" alt="Privacy mode with a closed fist" width="48%">
+
+</div>
+
+| Gesture | Action | Visual feedback |
+|---|---|---|
+| Index finger up | Move cursor | Purple circle on the fingertip |
+| Index and middle fingers pinched (< 35 px) | Left click | Green "CLICK" text |
+| Thumb and pinky distance | Volume control (0-100%) | Volume percentage display |
+| All fingers closed | Privacy mode | Screen blackout |
+
+## How it works
+
+<div align="center">
+
+<img src="assets/pipeline.svg" alt="Processing pipeline" width="100%">
+
+</div>
+
+1. **OpenCV** captures each frame from the webcam.
+2. **MediaPipe** detects the hand and returns 21 landmarks.
+3. The gesture recognizer analyses finger positions.
+4. The action mapper converts the gesture into a command.
+5. **PyAutoGUI** and **Pycaw** apply the command to the system.
+
+### Technologies
+
+| Technology | Purpose |
+|---|---|
+| [Python 3.8+](https://python.org) | Core language, coordinates the whole system |
+| [OpenCV](https://opencv.org) | Video capture and image processing |
+| [MediaPipe](https://mediapipe.dev) | Real-time hand landmark detection (21 keypoints) |
+| [NumPy](https://numpy.org) | Mathematical operations and data manipulation |
+| [PyAutoGUI](https://pyautogui.readthedocs.io) | Cursor control and click simulation |
+| [Pycaw](https://github.com/AndreMiras/pycaw) | Windows audio control |
+| [Pygame](https://pygame.org) | Game framework for Gesture Defender |
+
+### Technical details
+
+- **Smoothing:** weighted average over a 4-frame buffer for stable cursor movement.
+- **Detection:** 80% confidence threshold for reliable hand tracking.
+- **Performance:** 30+ FPS real-time processing with less than 50 ms from gesture to action.
+- **Lighting:** brightness matters. Good lighting improves the detection of finger positions and hand shape, and reduces motion blur so fast gestures stay responsive.
+
+## Performance
+
+<div align="center">
+
+<img src="assets/metrics.svg" alt="Performance metrics" width="100%">
+
+</div>
+
+## Installation
+
+**Prerequisites**
 
 - Python 3.8 or higher
-- Webcam
-- Windows OS (for volume control features)
+- A webcam
+- Windows (required for the volume control feature)
 
-### Installation
 ```bash
 # Clone the repository
 git clone https://github.com/tass027/ai-virtual-mouse.git
 cd ai-virtual-mouse
 
-# Create virtual environment (recommended)
+# Create a virtual environment (recommended)
 python -m venv venv
 
-# Activate virtual environment
+# Activate it
 # Windows:
 venv\Scripts\activate
-# Mac/Linux:
+# macOS / Linux:
 source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
 ```
 
-### Usage
+## Usage
 
-**Launch Virtual Mouse:**
 ```bash
+# Virtual mouse
 python src/virtual_mouse.py
-```
 
-**Launch Volume Control:**
-```bash
+# Volume control
 python src/volume_control.py
-```
 
-**Launch Gesture Defender Game:**
-```bash
+# Gesture Defender game
 python src/games/gesture_defender.py
 ```
 
-**Exit any application:** Press `ESC` key
+Press `ESC` to exit any application.
 
-## 🛠️ Technologies Used
+## Gesture Defender
 
-| Technology | Purpose | Documentation |
-|------------|---------|---------------|
-| **Python 3.8+** | Core programming language | [python.org](https://python.org) |
-| **OpenCV** | Video capture & image processing | [opencv.org](https://opencv.org) |
-| **MediaPipe** | Hand landmark detection (21 keypoints) | [mediapipe.dev](https://mediapipe.dev) |
-| **NumPy** | Mathematical operations & data manipulation | [numpy.org](https://numpy.org) |
-| **PyAutoGUI** | Mouse cursor control & click simulation | [pyautogui.readthedocs.io](https://pyautogui.readthedocs.io) |
-| **Pycaw** | Windows audio control | [GitHub](https://github.com/AndreMiras/pycaw) |
-| **Pygame** | Game development framework | [pygame.org](https://pygame.org) |
+A two-player game that compares gesture control with a traditional mouse.
 
-## 🏗️ Project Structure
-```
-ai-virtual-mouse/
-├── src/
-│   ├── virtual_mouse.py          # Main virtual mouse application
-│   ├── HandTrackingModule.py     # Hand detection & tracking module
-│   ├── volume_control.py         # Standalone volume control
-│   └── games/
-│       └── gesture_defender.py   # Gesture-controlled game
-├── examples/
-│   └── simple_hand_control.py    # Basic hand control example
-├── requirements.txt               # Python dependencies
-├── LICENSE                        # MIT License
-└── README.md                      # This file
-```
+| Player | Control | Shoot | Deploy shield | Speed |
+|---|---|---|---|---|
+| Left | Hand gestures | Pinch index and middle fingers | Pinch index and ring fingers | Thumb-pinky distance |
+| Right | Mouse | Left click | Right click | Not available |
 
-## 🎯 How It Works
+**Objective:** shoot the falling threats before they reach the bottom of the screen.
 
-### Architecture Flow
-```
-Webcam Feed
-    ↓
-OpenCV (Image Capture)
-    ↓
-MediaPipe (Hand Detection - 21 Landmarks)
-    ↓
-Gesture Recognition (Finger Position Analysis)
-    ↓
-Action Mapping (Movement/Click/Volume/Privacy)
-    ↓
-System Control (PyAutoGUI/Pycaw)
-```
+## Configuration
 
-### Key Technical Features
+Edit these parameters in `src/virtual_mouse.py`:
 
-- **Smoothing Algorithm**: Weighted averaging with 4-frame buffer for stable cursor movement
-- **High Detection Accuracy**: 80% confidence threshold for reliable hand tracking
-- **Optimized Performance**: 30+ FPS real-time processing
-- **Low Latency**: < 50ms response time from gesture to action
-
-## ⚙️ Configuration
-
-Customize the behavior by editing these parameters in `src/virtual_mouse.py`:
 ```python
 self.wCam, self.hCam = 640, 480    # Camera resolution
 self.smoothening = 8                # Cursor smoothness (higher = smoother)
 self.frameR = 100                   # Screen edge margin
 self.buffer_length = 4              # Movement buffer size
-detectionCon=0.8                    # Detection confidence (0.0-1.0)
-trackCon=0.8                        # Tracking confidence (0.0-1.0)
+detectionCon = 0.8                  # Detection confidence (0.0 - 1.0)
+trackCon = 0.8                      # Tracking confidence (0.0 - 1.0)
 ```
 
-## 🎮 Gesture Defender Game
+## Project structure
 
-A competitive dual-control game showcasing gesture recognition:
+```
+ai-virtual-mouse/
+├── assets/                        # README graphics
+├── src/
+│   ├── virtual_mouse.py           # Main virtual mouse application
+│   ├── HandTrackingModule.py      # Hand detection and tracking module
+│   ├── volume_control.py          # Standalone volume control
+│   └── games/
+│       └── gesture_defender.py    # Gesture-controlled game
+├── examples/
+│   └── simple_hand_control.py     # Basic hand control example
+├── requirements.txt               # Python dependencies
+├── LICENSE                        # MIT License
+└── README.md
+```
 
-- **Gesture Player (Left)**: Control with hand gestures
-- **Mouse Player (Right)**: Control with traditional mouse
-- **Objective**: Shoot falling threats before they reach the bottom
-- **Controls**:
-  - Shoot: Pinch index + middle fingers (gesture) or left-click (mouse)
-  - Deploy Shield: Pinch index + ring fingers (gesture) or right-click (mouse)
-  - Speed Control: Adjust thumb-pinky distance (gesture only)
+## Applications
 
-## 📊 Performance Metrics
+| Domain | Use case |
+|---|---|
+| Healthcare | Hands-free control for medical staff, reducing contamination risks in surgery and research |
+| Sign language | Translation of hand gestures into text or speech to support the deaf and hard of hearing |
+| Smart homes | Control of lights, TV or thermostat with simple gestures |
+| Workplace | Hands-free navigation during presentations or 3D modeling |
+| Education | Interactive learning and classroom tools for teachers and students |
+| Gaming | Gesture-based control for immersive games |
 
-- **FPS**: 30+ frames per second
-- **Latency**: < 50ms gesture-to-action
-- **Accuracy**: 95%+ gesture recognition rate
-- **Tracking Range**: 30-80cm from camera (optimal)
+## Troubleshooting
 
-## 🔧 Troubleshooting
+<details>
+<summary><b>Camera not found</b></summary>
 
-### Camera Not Found
 ```python
 # Test available cameras
 import cv2
 for i in range(3):
     cap = cv2.VideoCapture(i)
     if cap.isOpened():
-        print(f"Camera {i} works!")
+        print(f"Camera {i} works")
         cap.release()
 ```
 
-### Low FPS / Performance Issues
-- Close unnecessary background applications
-- Reduce camera resolution in code
-- Ensure good lighting conditions
-- Lower detection confidence values
+</details>
 
-### Gestures Not Recognized
-- Maintain 30-50cm distance from camera
-- Ensure adequate lighting
-- Keep entire hand visible in frame
-- Clean camera lens
-- Adjust `detectionCon` and `trackCon` values
+<details>
+<summary><b>Low FPS or performance issues</b></summary>
 
-### Volume Control Not Working
-- Ensure you're on Windows OS (Pycaw is Windows-only)
-- Run with administrator privileges if needed
+- Close unnecessary background applications.
+- Reduce the camera resolution in the code.
+- Ensure good lighting conditions.
+- Lower the detection confidence values.
 
-## 🚀 Future Enhancements
+</details>
 
-- [ ] Right-click gesture support
-- [ ] Scroll gesture implementation
-- [ ] Cross-platform volume control (Mac/Linux)
-- [ ] Custom gesture training system
+<details>
+<summary><b>Gestures not recognized</b></summary>
+
+- Stay 30-50 cm from the camera.
+- Make sure the lighting is adequate.
+- Keep the entire hand visible in the frame.
+- Clean the camera lens.
+- Adjust the `detectionCon` and `trackCon` values.
+
+</details>
+
+<details>
+<summary><b>Volume control not working</b></summary>
+
+- Pycaw is Windows-only. Make sure you are running on Windows.
+- Run the script with administrator privileges if needed.
+
+</details>
+
+## Known issues
+
+- Volume control only works on Windows (Pycaw limitation).
+- Privacy mode may flicker with very rapid hand movements.
+- Performance depends heavily on lighting conditions.
+- Optimal tracking requires adequate camera quality.
+
+## Roadmap
+
+- [ ] Right-click gesture
+- [ ] Scroll gesture
+- [ ] Cross-platform volume control (macOS, Linux)
+- [ ] Custom gesture training
 - [ ] Multi-hand support
 - [ ] Gesture macro recording
 - [ ] Mobile app integration
 - [ ] Voice command integration
 
-## 🐛 Known Issues
+## Team
 
-- Volume control only works on Windows (Pycaw limitation)
-- Privacy mode may flicker with very rapid hand movements
-- Performance depends heavily on lighting conditions
-- Requires adequate camera quality for optimal tracking
+| Name |
+|---|
+| Tasnim Elmehrabi ([GitHub](https://github.com/tass027)) |
+| Maram Bel-Houchet |
+| Rihab BenYahmed |
 
-## 🤝 Contributing
+## Contributing
 
-Contributions are welcome! Here's how you can help:
+1. Fork the repository.
+2. Create a feature branch: `git checkout -b feature/your-feature`
+3. Commit your changes: `git commit -m "Add your feature"`
+4. Push the branch: `git push origin feature/your-feature`
+5. Open a Pull Request.
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+## License
 
-## 📄 License
+Distributed under the MIT License. See the [LICENSE](LICENSE) file.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Acknowledgments
 
-## 🙏 Acknowledgments
+- The MediaPipe team for the hand tracking framework
+- The OpenCV community for the computer vision tools
+- The Python community
 
-- **MediaPipe Team** for the powerful hand tracking framework
-- **OpenCV Community** for computer vision tools
-- **Python Community** for the robust ecosystem
+## Contact
 
-## 📧 Contact
-
-**Project Link**: [https://github.com/tass027/ai-virtual-mouse](https://github.com/tass027/ai-virtual-mouse)
-
-**Report Issues**: [GitHub Issues](https://github.com/tass027/ai-virtual-mouse/issues)
-
----
-
-⭐ **If you find this project useful, please give it a star!**
+Project: [github.com/tass027/ai-virtual-mouse](https://github.com/tass027/ai-virtual-mouse) · Issues: [GitHub Issues](https://github.com/tass027/ai-virtual-mouse/issues)
